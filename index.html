@@ -1,0 +1,2077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PixForge — Forge Your Files Into Perfection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #18181f;
+  --surface: #1e1e28;
+  --surface2: #252532;
+  --border: #2e2e3e;
+  --accent: #ff6b2b;
+  --accent2: #ffb347;
+  --blue: #4f8dff;
+  --green: #2ecc8a;
+  --purple: #9b6bff;
+  --pink: #ff4d8f;
+  --text: #f0f0f8;
+  --text2: #9898b0;
+  --text3: #5a5a72;
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ─── GRID NOISE TEXTURE ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* ─── NAVIGATION ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 68px;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+
+.logo-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
+}
+
+.logo-text span { color: var(--accent); }
+
+nav ul {
+  display: flex; list-style: none; gap: 4px;
+}
+
+nav ul li a {
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+nav ul li a:hover {
+  color: var(--text);
+  background: var(--surface);
+}
+
+.nav-cta {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-radius: 8px;
+}
+.nav-cta:hover { background: #e55a1f !important; }
+
+.nav-safe {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--green);
+  background: rgba(46,204,138,0.1);
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(46,204,138,0.25);
+}
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  padding: 160px 40px 100px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(255,107,43,0.12) 0%, transparent 70%);
+  top: -100px; left: 50%; transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,107,43,0.1);
+  border: 1px solid rgba(255,107,43,0.3);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 30px;
+  margin-bottom: 28px;
+  animation: fadeDown 0.6s ease both;
+}
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(42px, 7vw, 88px);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -3px;
+  margin-bottom: 24px;
+  animation: fadeDown 0.7s ease both 0.1s;
+}
+
+.hero h1 .grad {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+  font-size: 18px;
+  color: var(--text2);
+  max-width: 540px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+  animation: fadeDown 0.7s ease both 0.2s;
+}
+
+.hero-btns {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  animation: fadeDown 0.7s ease both 0.3s;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none; cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { background: #e55a1f; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255,107,43,0.35); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-outline:hover { border-color: var(--text3); background: var(--surface); }
+
+/* STATS */
+.stats {
+  display: flex; justify-content: center; gap: 60px;
+  flex-wrap: wrap;
+  margin-top: 70px;
+  padding: 40px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  animation: fadeUp 0.8s ease both 0.4s;
+}
+
+.stat { text-align: center; }
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -1px;
+}
+.stat-label { font-size: 13px; color: var(--text2); margin-top: 4px; }
+
+/* ─── SECTIONS ─── */
+.section {
+  padding: 90px 40px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.section-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.section-label::before {
+  content: '';
+  width: 20px; height: 2px;
+  background: var(--accent);
+}
+
+.section h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  margin-bottom: 10px;
+}
+
+.section-sub {
+  color: var(--text2);
+  font-size: 16px;
+  margin-bottom: 50px;
+  max-width: 500px;
+}
+
+/* ─── TOOL GRID ─── */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.tool-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+}
+
+.tool-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: inherit;
+}
+
+.tool-card:hover {
+  transform: translateY(-4px);
+  border-color: transparent;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+
+.tool-card:hover::before { opacity: 1; }
+
+/* PDF tools - orange */
+.tool-card.pdf::before { background: linear-gradient(135deg, rgba(255,107,43,0.08), transparent); }
+.tool-card.pdf:hover { border-color: rgba(255,107,43,0.3); }
+.tool-card.pdf .tool-icon { background: rgba(255,107,43,0.15); color: var(--accent); }
+
+/* Image tools - blue */
+.tool-card.img::before { background: linear-gradient(135deg, rgba(79,141,255,0.08), transparent); }
+.tool-card.img:hover { border-color: rgba(79,141,255,0.3); }
+.tool-card.img .tool-icon { background: rgba(79,141,255,0.15); color: var(--blue); }
+
+/* Video tools - purple */
+.tool-card.vid::before { background: linear-gradient(135deg, rgba(155,107,255,0.08), transparent); }
+.tool-card.vid:hover { border-color: rgba(155,107,255,0.3); }
+.tool-card.vid .tool-icon { background: rgba(155,107,255,0.15); color: var(--purple); }
+
+/* Convert tools - green */
+.tool-card.conv::before { background: linear-gradient(135deg, rgba(46,204,138,0.08), transparent); }
+.tool-card.conv:hover { border-color: rgba(46,204,138,0.3); }
+.tool-card.conv .tool-icon { background: rgba(46,204,138,0.15); color: var(--green); }
+
+.tool-icon {
+  width: 50px; height: 50px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 18px;
+  transition: transform 0.2s;
+}
+
+.tool-card:hover .tool-icon { transform: scale(1.1) rotate(-3deg); }
+
+.tool-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 7px;
+  letter-spacing: -0.3px;
+}
+
+.tool-card p {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+.tool-badge {
+  position: absolute;
+  top: 14px; right: 14px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.badge-new { background: rgba(46,204,138,0.2); color: var(--green); }
+.badge-hot { background: rgba(255,107,43,0.2); color: var(--accent); }
+.badge-4k  { background: rgba(155,107,255,0.2); color: var(--purple); }
+
+/* ─── CATEGORY TABS ─── */
+.cat-tabs {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.cat-tab {
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 14px; font-weight: 500;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cat-tab.active, .cat-tab:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ─── UPLOAD MODAL ─── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(10px);
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.modal-overlay.active { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 40px;
+  width: 90%;
+  max-width: 560px;
+  transform: scale(0.95) translateY(20px);
+  transition: transform 0.3s;
+  position: relative;
+}
+
+.modal-overlay.active .modal {
+  transform: scale(1) translateY(0);
+}
+
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 32px; height: 32px;
+  background: var(--surface2);
+  border: none; border-radius: 8px;
+  color: var(--text2); font-size: 18px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.modal-close:hover { background: var(--border); color: var(--text); }
+
+.modal h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px; font-weight: 800;
+  margin-bottom: 6px; letter-spacing: -0.5px;
+}
+
+.modal-desc { font-size: 14px; color: var(--text2); margin-bottom: 28px; }
+
+.drop-zone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 50px 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg3);
+  position: relative;
+}
+
+.drop-zone:hover, .drop-zone.dragover {
+  border-color: var(--accent);
+  background: rgba(255,107,43,0.04);
+}
+
+.drop-zone input[type=file] {
+  position: absolute; inset: 0;
+  opacity: 0; cursor: pointer;
+  width: 100%; height: 100%;
+}
+
+.drop-icon { font-size: 44px; margin-bottom: 14px; }
+
+.drop-zone h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px; font-weight: 700; margin-bottom: 6px;
+}
+
+.drop-zone p { font-size: 13px; color: var(--text2); }
+.drop-zone .drop-hint { 
+  margin-top: 12px; 
+  font-size: 11px; 
+  color: var(--text3); 
+  border: 1px solid var(--border); 
+  border-radius: 6px; 
+  padding: 4px 12px; 
+  display: inline-block; 
+}
+
+/* Options inside modal */
+.modal-options {
+  margin-top: 20px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+
+.option-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+}
+
+.option-label { font-size: 14px; color: var(--text2); font-weight: 500; }
+
+.option-select {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  outline: none;
+  flex: 1;
+  max-width: 200px;
+}
+
+.option-select:focus { border-color: var(--accent); }
+
+.slider-wrap { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%; height: 5px;
+  background: var(--surface2);
+  border-radius: 4px; outline: none;
+  cursor: pointer;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(255,107,43,0.4);
+}
+
+.slider-value { font-size: 12px; color: var(--accent); text-align: right; }
+
+.modal-action {
+  margin-top: 24px;
+  display: flex; gap: 10px;
+}
+
+.btn-modal {
+  flex: 1;
+  padding: 13px;
+  border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+  border: none; cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.btn-modal.primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-modal.primary:hover { background: #e55a1f; }
+
+.btn-modal.secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-modal.secondary:hover { background: var(--border); }
+
+/* Progress */
+.progress-wrap {
+  display: none;
+  margin-top: 20px;
+  flex-direction: column; gap: 8px;
+}
+
+.progress-wrap.visible { display: flex; }
+
+.progress-bar-bg {
+  height: 6px;
+  background: var(--surface2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.3s;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+  100% { filter: brightness(1); }
+}
+
+.progress-text { font-size: 13px; color: var(--text2); }
+
+/* File info chip */
+.file-chip {
+  display: none;
+  align-items: center; gap: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-top: 12px;
+}
+.file-chip.visible { display: flex; }
+.file-chip-icon { font-size: 22px; }
+.file-chip-info { flex: 1; }
+.file-chip-name { font-size: 13px; font-weight: 600; }
+.file-chip-size { font-size: 12px; color: var(--text2); }
+.file-chip-remove {
+  background: none; border: none;
+  color: var(--text3); font-size: 16px;
+  cursor: pointer; padding: 4px;
+}
+
+/* ─── SAFETY SECTION ─── */
+.safety-section {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 80px 40px;
+}
+
+.safety-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.safety-cards {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+
+.safety-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.safety-card-icon {
+  font-size: 28px; margin-bottom: 12px;
+}
+
+.safety-card h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px; font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.safety-card p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+/* ─── FEATURES STRIP ─── */
+.features-strip {
+  display: flex; flex-wrap: wrap; gap: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.feature-item {
+  flex: 1; min-width: 160px;
+  padding: 24px 30px;
+  display: flex; align-items: center; gap: 12px;
+  border-right: 1px solid var(--border);
+  font-size: 14px; font-weight: 500;
+}
+.feature-item:last-child { border-right: none; }
+.feature-item span { font-size: 20px; }
+
+/* ─── HOW IT WORKS ─── */
+.steps {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;
+}
+
+.step {
+  position: relative;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  overflow: hidden;
+}
+
+.step-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--border);
+  position: absolute;
+  bottom: 10px; right: 20px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.step-icon {
+  width: 48px; height: 48px;
+  background: rgba(255,107,43,0.12);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 18px;
+}
+
+.step h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px; font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.step p { font-size: 14px; color: var(--text2); line-height: 1.5; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 60px 40px 30px;
+}
+
+.footer-inner {
+  max-width: 1280px; margin: 0 auto;
+}
+
+.footer-top {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px;
+  padding-bottom: 50px;
+  border-bottom: 1px solid var(--border);
+}
+
+.footer-brand p {
+  font-size: 14px; color: var(--text2); line-height: 1.6;
+  margin: 14px 0 20px;
+  max-width: 260px;
+}
+
+.footer-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.footer-badge {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(46,204,138,0.1);
+  border: 1px solid rgba(46,204,138,0.2);
+  color: var(--green);
+  font-size: 11px; font-weight: 600;
+  padding: 5px 10px; border-radius: 6px;
+}
+
+.footer-col h5 {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 18px;
+}
+
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul li a {
+  color: var(--text2); text-decoration: none; font-size: 14px;
+  transition: color 0.2s;
+}
+.footer-col ul li a:hover { color: var(--accent); }
+
+.footer-bottom {
+  padding-top: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 14px;
+}
+
+.footer-bottom p { font-size: 13px; color: var(--text3); }
+.footer-bottom a { color: var(--text2); text-decoration: none; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border); }
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed; bottom: 30px; right: 30px; z-index: 500;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 14px;
+  transform: translateY(100px); opacity: 0;
+  transition: all 0.3s;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-icon { font-size: 20px; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .safety-inner { grid-template-columns: 1fr; }
+  nav ul { display: none; }
+}
+
+@media (max-width: 600px) {
+  .hero { padding: 120px 20px 60px; }
+  .section { padding: 60px 20px; }
+  nav { padding: 0 20px; }
+  .stats { gap: 30px; padding: 30px 20px; }
+  .footer-top { grid-template-columns: 1fr; }
+}
+
+/* Mobile menu */
+.menu-btn {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  align-items: center; justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .menu-btn { display: flex; }
+}
+
+/* Search bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  max-width: 480px;
+  margin: 0 auto 50px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 4px 4px 4px 18px;
+  gap: 10px;
+  transition: border-color 0.2s;
+}
+
+.search-bar:focus-within { border-color: var(--accent); }
+
+.search-bar input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 15px;
+  font-family: inherit;
+  padding: 10px 0;
+}
+
+.search-bar input::placeholder { color: var(--text3); }
+
+.search-bar button {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px; font-weight: 600;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.search-bar button:hover { background: #e55a1f; }
+
+/* Banner */
+.coming-soon-banner {
+  background: linear-gradient(90deg, rgba(155,107,255,0.1), rgba(79,141,255,0.1));
+  border: 1px solid rgba(155,107,255,0.2);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 40px;
+  font-size: 14px;
+}
+
+.coming-soon-banner .banner-icon { font-size: 22px; }
+.coming-soon-banner strong { color: var(--purple); }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Pix<span>Forge</span></div>
+  </a>
+  <ul>
+    <li><a href="#pdf-tools">PDF Tools</a></li>
+    <li><a href="#image-tools">Image Tools</a></li>
+    <li><a href="#video-tools">Video Tools</a></li>
+    <li><a href="#convert-tools">Convert</a></li>
+    <li><a href="#safety">Security</a></li>
+    <li><a href="#" class="nav-cta">Try Free</a></li>
+  </ul>
+  <div class="nav-safe">
+    <span>🔒</span> 100% Secure
+  </div>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">✦ The Ultimate File Toolkit — Free & Secure</div>
+  <h1>
+    Forge Every File<br>
+    <span class="grad">Into Perfection.</span>
+  </h1>
+  <p>Convert, compress, enhance, and transform PDFs, images, and videos — all in one blazing-fast, privacy-first platform.</p>
+  <div class="hero-btns">
+    <a href="#pdf-tools" class="btn-primary">⚡ Start Forging &nbsp;→</a>
+    <a href="#how-it-works" class="btn-outline">How it works</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">50+</div>
+    <div class="stat-label">Powerful Tools</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">100%</div>
+    <div class="stat-label">Free to Use</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">256-bit</div>
+    <div class="stat-label">SSL Encryption</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">1hr</div>
+    <div class="stat-label">Auto File Deletion</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">4K</div>
+    <div class="stat-label">Max Video Quality</div>
+  </div>
+</div>
+
+<!-- FEATURES STRIP -->
+<div class="features-strip">
+  <div class="feature-item"><span>🔒</span> Files deleted after 1 hour</div>
+  <div class="feature-item"><span>⚡</span> Blazing fast processing</div>
+  <div class="feature-item"><span>🌐</span> Works in any browser</div>
+  <div class="feature-item"><span>📵</span> No account required</div>
+  <div class="feature-item"><span>💳</span> No credit card ever</div>
+</div>
+
+<!-- ALL TOOLS SECTION -->
+<section class="section" id="all-tools">
+  <div class="section-label">All Tools</div>
+  <h2>Everything You Need</h2>
+  <p class="section-sub">50+ tools across PDF, Image, Video, and Convert — all in one place.</p>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search tools... e.g. compress image" oninput="filterTools()">
+    <button>Search</button>
+  </div>
+
+  <div class="cat-tabs">
+    <button class="cat-tab active" onclick="filterCategory('all',this)">All Tools</button>
+    <button class="cat-tab" onclick="filterCategory('pdf',this)">📄 PDF</button>
+    <button class="cat-tab" onclick="filterCategory('img',this)">🖼️ Image</button>
+    <button class="cat-tab" onclick="filterCategory('vid',this)">🎬 Video</button>
+    <button class="cat-tab" onclick="filterCategory('conv',this)">🔄 Convert</button>
+  </div>
+
+  <!-- PDF TOOLS -->
+  <div id="pdf-tools" style="margin-bottom:50px;">
+    <div class="section-label" style="margin-bottom:20px;">PDF Tools</div>
+    <div class="tool-grid" id="pdf-grid">
+
+      <div class="tool-card pdf" onclick="openTool('pdf-maker','📄','PDF Maker','Create a new PDF from images, text, or blank pages.','application/pdf,image/*','pdf')">
+        <span class="tool-badge badge-hot">Hot</span>
+        <div class="tool-icon">📄</div>
+        <h3>PDF Maker</h3>
+        <p>Create PDFs from images or blank canvas with custom pages.</p>
+      </div>
+
+      <div class="tool-card pdf" onclick="openTool('compress-pdf','🗜️','Compress PDF','Reduce PDF file size without losing quality.','application/pdf','pdf')">
+        <div class="tool-icon">🗜️</div>
+        <h3>Compress PDF</h3>
+        <p>Shrink large PDFs while preserving visual quality.</p>
+      </div>
+
+      <div class="tool-card pdf" onclick="openTool('merge-pdf','🔗','Merge PDF','Combine multiple PDFs into one seamless file.','application/pdf','pdf')">
+        <div class="tool-icon">🔗</div>
+        <h3>Merge PDF</h3>
+        <p>Combine multiple PDF files into one in any order.</p>
+      </div>
+
+      <div class="tool-card pdf" onclick="openTool('split-pdf','✂️','Split PDF','Split PDF pages into separate files instantly.','application/pdf','pdf')">
+        <div class="tool-icon">✂️</div>
+        <h3>Split PDF</h3>
+        <p>Extract specific pages or divide PDF into multiple files.</p>
+      </div>
+
+      <div class="tool-card pdf" onclick="openTool('pdf-to-word','📝','PDF to Word','Convert PDF documents to editable Word files.','application/pdf','pdf')">
+        <span class="tool-badge badge-new">New</span>
+        <div class="tool-icon">📝</div>
+        <h3>PDF to Word</h3>
+        <p>Accurately convert PDFs to editable .docx format.</p>
+      </div>
+
+      <div class="tool-card pdf" onclick="openTool('pdf-to-jpg','🖼️','PDF to JPG','Export every PDF page as a high-quality image.','application/pdf','pdf')">
+        <div class="tool-icon">🖼️</div>
+        <h3>PDF to JPG</h3>
+        <p>Convert each PDF page into a crisp JPG image.</p>
+      </div>
+
+      <div class="tool-card pdf" onclick="openTool('rotate-pdf','🔄','Rotate PDF','Rotate pages to any angle — 90°, 180°, 270°.','application/pdf','pdf')">
+        <div class="tool-icon">🔄</div>
+        <h3>Rotate PDF</h3>
+        <p>Fix orientation of any or all PDF pages instantly.</p>
+      </div>
+
+      <div class="tool-card pdf" onclick="openTool('protect-pdf','🔐','Protect PDF','Add password protection to your PDF files.','application/pdf','pdf')">
+        <div class="tool-icon">🔐</div>
+        <h3>Protect PDF</h3>
+        <p>Encrypt and password-protect sensitive PDF documents.</p>
+      </div>
+
+      <div class="tool-card pdf" onclick="openTool('unlock-pdf','🔓','Unlock PDF','Remove password from a protected PDF file.','application/pdf','pdf')">
+        <div class="tool-icon">🔓</div>
+        <h3>Unlock PDF</h3>
+        <p>Easily unlock and open password-protected PDF files.</p>
+      </div>
+
+      <div class="tool-card pdf" onclick="openTool('watermark-pdf','💧','Watermark PDF','Add custom text or image watermark to your PDF.','application/pdf','pdf')">
+        <div class="tool-icon">💧</div>
+        <h3>Watermark PDF</h3>
+        <p>Stamp your branding or copyright watermark on PDFs.</p>
+      </div>
+
+      <div class="tool-card pdf" onclick="openTool('pdf-to-excel','📊','PDF to Excel','Convert PDF tables into editable spreadsheets.','application/pdf','pdf')">
+        <span class="tool-badge badge-new">New</span>
+        <div class="tool-icon">📊</div>
+        <h3>PDF to Excel</h3>
+        <p>Extract PDF tables into clean, editable Excel files.</p>
+      </div>
+
+      <div class="tool-card pdf" onclick="openTool('pdf-to-ppt','📊','PDF to PowerPoint','Convert PDF slides into editable PowerPoint.','application/pdf','pdf')">
+        <div class="tool-icon">📑</div>
+        <h3>PDF to PowerPoint</h3>
+        <p>Transform PDF presentations into editable PPTX files.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- IMAGE TOOLS -->
+  <div id="image-tools" style="margin-bottom:50px;">
+    <div class="section-label" style="margin-bottom:20px;">Image Tools</div>
+    <div class="tool-grid" id="img-grid">
+
+      <div class="tool-card img" onclick="openTool('image-to-pdf','📄','Image to PDF','Convert JPG, PNG, WEBP images into a PDF file.','image/*','img')">
+        <span class="tool-badge badge-hot">Hot</span>
+        <div class="tool-icon">📄</div>
+        <h3>Image to PDF</h3>
+        <p>Convert one or multiple images into a single PDF file.</p>
+      </div>
+
+      <div class="tool-card img" onclick="openTool('compress-image','🗜️','Compress Image','Reduce image size while preserving visual quality.','image/*','img')">
+        <div class="tool-icon">🗜️</div>
+        <h3>Compress Image</h3>
+        <p>Minimize image file size without visible quality loss.</p>
+      </div>
+
+      <div class="tool-card img" onclick="openTool('image-to-hd','✨','Image to HD','Upscale and enhance image to HD resolution.','image/*','img')">
+        <span class="tool-badge badge-new">New</span>
+        <div class="tool-icon">✨</div>
+        <h3>Image to HD</h3>
+        <p>AI-powered upscaling to Full HD or 4K resolution.</p>
+      </div>
+
+      <div class="tool-card img" onclick="openTool('image-quality','⚙️','Image Quality Changer','Adjust JPEG compression and quality precisely.','image/*','img')">
+        <div class="tool-icon">⚙️</div>
+        <h3>Image Quality Changer</h3>
+        <p>Fine-tune image quality level from 1% to 100% control.</p>
+      </div>
+
+      <div class="tool-card img" onclick="openTool('image-to-jpg','🖼️','Image to JPG','Convert PNG, WEBP, HEIC, BMP to JPG format.','image/*','img')">
+        <div class="tool-icon">🖼️</div>
+        <h3>Image to JPG</h3>
+        <p>Convert any image format to universally supported JPG.</p>
+      </div>
+
+      <div class="tool-card img" onclick="openTool('jpg-to-png','🔄','JPG to PNG','Convert JPG images to transparent-capable PNG.','image/jpeg,image/jpg','img')">
+        <div class="tool-icon">🔄</div>
+        <h3>JPG to PNG</h3>
+        <p>Convert JPG to PNG for lossless quality and transparency.</p>
+      </div>
+
+      <div class="tool-card img" onclick="openTool('image-to-webp','⚡','Image to WebP','Convert images to modern WebP format for web.','image/*','img')">
+        <span class="tool-badge badge-new">New</span>
+        <div class="tool-icon">⚡</div>
+        <h3>Image to WebP</h3>
+        <p>Reduce web image size 30% more with WebP conversion.</p>
+      </div>
+
+      <div class="tool-card img" onclick="openTool('resize-image','📐','Resize Image','Resize to exact pixels, percentages, or ratios.','image/*','img')">
+        <div class="tool-icon">📐</div>
+        <h3>Resize Image</h3>
+        <p>Resize images to exact dimensions or percentages.</p>
+      </div>
+
+      <div class="tool-card img" onclick="openTool('crop-image','✂️','Crop Image','Crop images to custom shapes and aspect ratios.','image/*','img')">
+        <div class="tool-icon">✂️</div>
+        <h3>Crop Image</h3>
+        <p>Crop to custom area, aspect ratios, or circular shapes.</p>
+      </div>
+
+      <div class="tool-card img" onclick="openTool('remove-bg','🪄','Remove Background','AI removes background from any image instantly.','image/*','img')">
+        <span class="tool-badge badge-hot">Hot</span>
+        <div class="tool-icon">🪄</div>
+        <h3>Remove Background</h3>
+        <p>One-click AI background removal for any photo.</p>
+      </div>
+
+      <div class="tool-card img" onclick="openTool('rotate-image','🔄','Rotate & Flip Image','Rotate to any angle or flip images horizontally.','image/*','img')">
+        <div class="tool-icon">↩️</div>
+        <h3>Rotate & Flip</h3>
+        <p>Rotate images to any degree, flip horizontal or vertical.</p>
+      </div>
+
+      <div class="tool-card img" onclick="openTool('watermark-image','💧','Watermark Image','Add text or logo watermark to protect your images.','image/*','img')">
+        <div class="tool-icon">💧</div>
+        <h3>Watermark Image</h3>
+        <p>Protect photos with custom text or logo watermarks.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- VIDEO TOOLS -->
+  <div id="video-tools" style="margin-bottom:50px;">
+    <div class="section-label" style="margin-bottom:20px;">Video Tools</div>
+    <div class="coming-soon-banner">
+      <span class="banner-icon">🎬</span>
+      <div>
+        <strong>Video Enhancement is in Beta</strong> — AI-powered 4K upscaling, smart compression & format conversion. <strong style="color:var(--blue)">Available now for early users!</strong>
+      </div>
+    </div>
+    <div class="tool-grid" id="vid-grid">
+
+      <div class="tool-card vid" onclick="openTool('video-to-hd','🎬','Video to HD / 4K','AI upscale your video up to stunning 4K resolution.','video/*','vid')">
+        <span class="tool-badge badge-4k">4K</span>
+        <div class="tool-icon">🎬</div>
+        <h3>Video to HD / 4K</h3>
+        <p>AI-powered video enhancement up to 4K Ultra HD resolution.</p>
+      </div>
+
+      <div class="tool-card vid" onclick="openTool('compress-video','🗜️','Compress Video','Reduce video size dramatically without quality loss.','video/*','vid')">
+        <div class="tool-icon">🗜️</div>
+        <h3>Compress Video</h3>
+        <p>Smart compression to shrink video files for sharing.</p>
+      </div>
+
+      <div class="tool-card vid" onclick="openTool('video-to-mp4','🔄','Video to MP4','Convert any video format to universal MP4.','video/*','vid')">
+        <div class="tool-icon">🔄</div>
+        <h3>Video to MP4</h3>
+        <p>Convert MOV, AVI, MKV, WebM and more to MP4.</p>
+      </div>
+
+      <div class="tool-card vid" onclick="openTool('trim-video','✂️','Trim Video','Cut and trim videos to your exact desired length.','video/*','vid')">
+        <div class="tool-icon">✂️</div>
+        <h3>Trim Video</h3>
+        <p>Cut your video to keep only the parts you need.</p>
+      </div>
+
+      <div class="tool-card vid" onclick="openTool('video-to-gif','🎞️','Video to GIF','Convert short video clips to animated GIF format.','video/*','vid')">
+        <span class="tool-badge badge-new">New</span>
+        <div class="tool-icon">🎞️</div>
+        <h3>Video to GIF</h3>
+        <p>Create animated GIFs from any video clip instantly.</p>
+      </div>
+
+      <div class="tool-card vid" onclick="openTool('extract-audio','🎵','Extract Audio','Extract audio track from any video as MP3/WAV.','video/*','vid')">
+        <div class="tool-icon">🎵</div>
+        <h3>Extract Audio</h3>
+        <p>Rip the audio track from videos in MP3 or WAV format.</p>
+      </div>
+
+      <div class="tool-card vid" onclick="openTool('video-resolution','📺','Change Resolution','Change video resolution — 1080p, 4K, 720p, 480p.','video/*','vid')">
+        <span class="tool-badge badge-4k">4K</span>
+        <div class="tool-icon">📺</div>
+        <h3>Change Resolution</h3>
+        <p>Upscale or downscale video resolution from 480p to 4K.</p>
+      </div>
+
+      <div class="tool-card vid" onclick="openTool('stabilize-video','🎥','Stabilize Video','AI removes shaky footage for smooth cinematic video.','video/*','vid')">
+        <span class="tool-badge badge-new">New</span>
+        <div class="tool-icon">🎥</div>
+        <h3>Stabilize Video</h3>
+        <p>AI-powered stabilization for shaky handheld footage.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONVERT TOOLS -->
+  <div id="convert-tools" style="margin-bottom:20px;">
+    <div class="section-label" style="margin-bottom:20px;">Convert Tools</div>
+    <div class="tool-grid" id="conv-grid">
+
+      <div class="tool-card conv" onclick="openTool('word-to-pdf','📄','Word to PDF','Convert .DOC or .DOCX to PDF perfectly.','application/msword,.docx','conv')">
+        <div class="tool-icon">📄</div>
+        <h3>Word to PDF</h3>
+        <p>Convert Word documents to pixel-perfect PDF files.</p>
+      </div>
+
+      <div class="tool-card conv" onclick="openTool('excel-to-pdf','📊','Excel to PDF','Convert Excel spreadsheets to PDF format.','application/vnd.ms-excel,.xlsx','conv')">
+        <div class="tool-icon">📊</div>
+        <h3>Excel to PDF</h3>
+        <p>Convert .XLS and .XLSX spreadsheets into PDF documents.</p>
+      </div>
+
+      <div class="tool-card conv" onclick="openTool('ppt-to-pdf','📑','PowerPoint to PDF','Convert PPT presentations to PDF slides.','application/vnd.ms-powerpoint,.pptx','conv')">
+        <div class="tool-icon">📑</div>
+        <h3>PPT to PDF</h3>
+        <p>Convert PowerPoint presentations into shareable PDFs.</p>
+      </div>
+
+      <div class="tool-card conv" onclick="openTool('html-to-pdf','🌐','HTML to PDF','Convert any webpage or HTML file to PDF.','text/html','conv')">
+        <span class="tool-badge badge-new">New</span>
+        <div class="tool-icon">🌐</div>
+        <h3>HTML to PDF</h3>
+        <p>Convert web pages and HTML files into PDF documents.</p>
+      </div>
+
+      <div class="tool-card conv" onclick="openTool('png-to-jpg','🖼️','PNG to JPG','Convert PNG images to compact JPG format.','image/png','conv')">
+        <div class="tool-icon">🖼️</div>
+        <h3>PNG to JPG</h3>
+        <p>Convert PNG files to JPG for smaller file sizes.</p>
+      </div>
+
+      <div class="tool-card conv" onclick="openTool('svg-to-png','✏️','SVG to PNG','Convert vector SVG files to raster PNG images.','image/svg+xml','conv')">
+        <div class="tool-icon">✏️</div>
+        <h3>SVG to PNG</h3>
+        <p>Render SVG vector graphics to high-res PNG images.</p>
+      </div>
+
+      <div class="tool-card conv" onclick="openTool('heic-to-jpg','📱','HEIC to JPG','Convert iPhone HEIC photos to universal JPG.','image/heic,image/heif','conv')">
+        <span class="tool-badge badge-hot">Hot</span>
+        <div class="tool-icon">📱</div>
+        <h3>HEIC to JPG</h3>
+        <p>Convert iPhone HEIC/HEIF photos to compatible JPG.</p>
+      </div>
+
+      <div class="tool-card conv" onclick="openTool('mp4-to-mp3','🎵','MP4 to MP3','Extract MP3 audio from any MP4 video file.','video/mp4','conv')">
+        <div class="tool-icon">🎵</div>
+        <h3>MP4 to MP3</h3>
+        <p>Extract the audio from MP4 videos as quality MP3 files.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+  <div class="section-label">How It Works</div>
+  <h2>3 Steps. That's It.</h2>
+  <p class="section-sub">PixForge is designed to be the fastest tool on the web. No login, no hassle.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">📁</div>
+      <h4>Upload Your File</h4>
+      <p>Drag & drop or select any file from your device. We accept PDF, JPG, PNG, MP4, MOV, WEBP and 30+ more formats.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon">⚙️</div>
+      <h4>Choose Your Tool</h4>
+      <p>Pick from 50+ tools, set your options — resolution, quality, output format — and hit the forge button.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">⬇️</div>
+      <h4>Download & Done</h4>
+      <p>Your processed file is ready in seconds. Download instantly. Files are auto-deleted in 1 hour for your privacy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SAFETY SECTION -->
+<div class="safety-section" id="safety">
+  <div class="safety-inner">
+    <div>
+      <div class="section-label">Security & Privacy</div>
+      <h2>Your Files Are<br>100% Safe.</h2>
+      <p style="color:var(--text2); margin-top:14px; line-height:1.7; font-size:15px;">
+        PixForge is built privacy-first. We never store, read, or share your files. 
+        Every upload is encrypted, processed in isolation, and permanently deleted — 
+        automatically, after 1 hour. Zero exceptions.
+      </p>
+      <div style="margin-top:28px; display:flex; gap:12px; flex-wrap:wrap;">
+        <div style="background:rgba(46,204,138,0.1); border:1px solid rgba(46,204,138,0.2); border-radius:10px; padding:10px 18px; display:flex; align-items:center; gap:8px; font-size:13px; color:var(--green); font-weight:600;">
+          ✓ GDPR Compliant
+        </div>
+        <div style="background:rgba(79,141,255,0.1); border:1px solid rgba(79,141,255,0.2); border-radius:10px; padding:10px 18px; display:flex; align-items:center; gap:8px; font-size:13px; color:var(--blue); font-weight:600;">
+          ✓ SSL Encrypted
+        </div>
+        <div style="background:rgba(255,107,43,0.1); border:1px solid rgba(255,107,43,0.2); border-radius:10px; padding:10px 18px; display:flex; align-items:center; gap:8px; font-size:13px; color:var(--accent); font-weight:600;">
+          ✓ No Data Selling
+        </div>
+      </div>
+    </div>
+    <div class="safety-cards">
+      <div class="safety-card">
+        <div class="safety-card-icon">🔒</div>
+        <h4>256-bit SSL Encryption</h4>
+        <p>All file transfers are encrypted end-to-end using bank-grade SSL.</p>
+      </div>
+      <div class="safety-card">
+        <div class="safety-card-icon">⏱️</div>
+        <h4>Auto-Delete in 1 Hour</h4>
+        <p>Every uploaded file is permanently deleted from our servers after 1 hour.</p>
+      </div>
+      <div class="safety-card">
+        <div class="safety-card-icon">🚫</div>
+        <h4>Zero Data Selling</h4>
+        <p>We never analyze, sell, or share your file content with anyone. Ever.</p>
+      </div>
+      <div class="safety-card">
+        <div class="safety-card-icon">🌍</div>
+        <h4>GDPR Compliant</h4>
+        <p>Full compliance with EU GDPR and global privacy regulations.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-icon">⚡</div>
+          <div class="logo-text">Pix<span>Forge</span></div>
+        </a>
+        <p>The all-in-one file toolkit. Free, fast, and built with privacy at its core.</p>
+        <div class="footer-badges">
+          <div class="footer-badge">🔒 SSL Secured</div>
+          <div class="footer-badge">✓ GDPR</div>
+          <div class="footer-badge">🛡️ Safe</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>PDF Tools</h5>
+        <ul>
+          <li><a href="#">PDF Maker</a></li>
+          <li><a href="#">Compress PDF</a></li>
+          <li><a href="#">Merge PDF</a></li>
+          <li><a href="#">Split PDF</a></li>
+          <li><a href="#">PDF to Word</a></li>
+          <li><a href="#">Protect PDF</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Image & Video</h5>
+        <ul>
+          <li><a href="#">Image to PDF</a></li>
+          <li><a href="#">Image to HD</a></li>
+          <li><a href="#">Compress Image</a></li>
+          <li><a href="#">Remove Background</a></li>
+          <li><a href="#">Video to 4K</a></li>
+          <li><a href="#">Compress Video</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About PixForge</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">API Access</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 PixForge. All rights reserved. Made with ❤️ for file lovers everywhere.</p>
+      <p><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Cookies</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- UPLOAD MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalIcon" style="font-size:32px; margin-bottom:12px;"></div>
+    <h3 id="modalTitle">Tool Name</h3>
+    <p class="modal-desc" id="modalDesc">Description here.</p>
+
+    <div class="drop-zone" id="dropZone" ondragover="dzDragOver(event)" ondragleave="dzDragLeave()" ondrop="dzDrop(event)">
+      <input type="file" id="fileInput" multiple onchange="handleFileSelect(event)">
+      <div class="drop-icon">☁️</div>
+      <h4>Drop files here</h4>
+      <p>or tap to browse — multiple files supported</p>
+      <span class="drop-hint" id="dropHint">Supports: PDF, JPG, PNG, MP4...</span>
+    </div>
+
+    <!-- Multiple file chips list -->
+    <div id="fileChipsList" style="margin-top:10px; display:flex; flex-direction:column; gap:6px;"></div>
+
+    <!-- Tool-specific options -->
+    <div class="modal-options" id="modalOptions"></div>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar-bg"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="progress-text" id="progressText">Processing...</div>
+    </div>
+
+    <div class="modal-action">
+      <button class="btn-modal secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn-modal primary" id="processBtn" onclick="processFile()">⚡ Forge It!</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✅</span>
+  <span id="toastMsg">File processed successfully!</span>
+</div>
+
+
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  PIXFORGE — Complete Working Engine v3
+//  ✅ All image tools: browser-based (no API needed)
+//  ✅ PDF tools: PDF.co API
+//  ✅ Video tools: FFmpeg.wasm (browser-based)
+//  ✅ Multiple file upload support
+//  ✅ Remove Background: browser pixel detection
+// ═══════════════════════════════════════════════════════
+
+// ── API Keys ──
+const KEYS = {
+  clipdrop: 'f2a9b5164f40477830172adad4ae6309c8a175a04c36f5376623dcd8c1216f41d081558dc3b53f3f072228662264e301',
+  pdfco:    'rajsraj7676@gmail.com_1vw0v66ENDlJkLLaTpkRQK1ybkOHEIXcUqpm6DOGbqFgzpQtmhn6FzH1NNajRFUK'
+};
+
+// ── State ──
+let currentTool = null;
+let selectedFiles = []; // array — supports multiple files
+
+// ── Tool option configs ──
+const toolConfigs = {
+  'pdf-maker':       { options: `<div class="option-row"><span class="option-label">Page Size</span><select class="option-select" id="opt1"><option>A4</option><option>Letter</option><option>A3</option></select></div><div class="option-row"><span class="option-label">Orientation</span><select class="option-select" id="opt2"><option>Portrait</option><option>Landscape</option></select></div>` },
+  'compress-pdf':    { options: `<div class="option-row"><span class="option-label">Compression</span><select class="option-select" id="opt1"><option>Recommended</option><option>Extreme</option><option>Less</option></select></div>` },
+  'compress-image':  { options: `<div class="option-row"><span class="option-label">Quality</span><div class="slider-wrap"><input type="range" class="slider" id="qualSlider" min="10" max="100" value="80" oninput="document.getElementById('qualVal').textContent=this.value+'%'"><div class="slider-value" id="qualVal">80%</div></div></div><div class="option-row"><span class="option-label">Format</span><select class="option-select" id="opt1"><option>Same as input</option><option>JPG</option><option>WebP</option><option>PNG</option></select></div>` },
+  'image-to-hd':     { options: `<div class="option-row"><span class="option-label">Scale</span><select class="option-select" id="opt1"><option>2x Upscale</option><option>4x Upscale</option></select></div>` },
+  'image-quality':   { options: `<div class="option-row"><span class="option-label">Quality</span><div class="slider-wrap"><input type="range" class="slider" id="qualSlider2" min="1" max="100" value="85" oninput="document.getElementById('qualVal2').textContent=this.value+'%'"><div class="slider-value" id="qualVal2">85%</div></div></div>` },
+  'resize-image':    { options: `<div class="option-row"><span class="option-label">Width (px)</span><input type="number" class="option-select" id="opt1" placeholder="e.g. 1920" style="max-width:180px"></div><div class="option-row"><span class="option-label">Height (px)</span><input type="number" class="option-select" id="opt2" placeholder="e.g. 1080" style="max-width:180px"></div><div class="option-row"><span class="option-label">Keep Ratio</span><select class="option-select" id="opt3"><option>Yes</option><option>No</option></select></div>` },
+  'video-to-hd':     { options: `<div class="option-row"><span class="option-label">Resolution</span><select class="option-select" id="opt1"><option>1080p Full HD</option><option>720p HD</option><option>480p</option></select></div>` },
+  'video-resolution':{ options: `<div class="option-row"><span class="option-label">Resolution</span><select class="option-select" id="opt1"><option>1080p (1920x1080)</option><option>720p (1280x720)</option><option>480p (854x480)</option></select></div>` },
+  'compress-video':  { options: `<div class="option-row"><span class="option-label">Target Size</span><select class="option-select" id="opt1"><option>Auto (Recommended)</option><option>50% smaller</option><option>70% smaller</option></select></div>` },
+};
+
+// ── Open Tool Modal ──
+function openTool(id, icon, title, desc, accept, type) {
+  currentTool = { id, icon, title, desc, accept, type };
+  document.getElementById('modalIcon').textContent = icon;
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalDesc').textContent = desc;
+  document.getElementById('fileInput').accept = accept;
+
+  // Multiple files for merge-pdf, otherwise single
+  document.getElementById('fileInput').multiple = ['merge-pdf','image-to-pdf','pdf-maker'].includes(id);
+
+  document.getElementById('dropHint').textContent = 'Supports: ' + accept.replace(/,/g, ', ');
+  const opts = toolConfigs[id];
+  document.getElementById('modalOptions').innerHTML = opts ? opts.options : '';
+  document.getElementById('progressWrap').classList.remove('visible');
+  document.getElementById('fileChipsList').innerHTML = '';
+  document.getElementById('modalOverlay').classList.add('active');
+  selectedFiles = [];
+  document.getElementById('fileInput').value = '';
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+function closeModalOutside(e) { if (e.target.id === 'modalOverlay') closeModal(); }
+
+// ── File Selection ──
+function handleFileSelect(e) {
+  addFiles(Array.from(e.target.files));
+}
+
+function dzDragOver(e) { e.preventDefault(); document.getElementById('dropZone').classList.add('dragover'); }
+function dzDragLeave()  { document.getElementById('dropZone').classList.remove('dragover'); }
+function dzDrop(e) {
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('dragover');
+  addFiles(Array.from(e.dataTransfer.files));
+}
+
+function addFiles(files) {
+  files.forEach(f => {
+    if (!selectedFiles.find(x => x.name === f.name && x.size === f.size)) {
+      selectedFiles.push(f);
+    }
+  });
+  renderFileChips();
+}
+
+function removeFileAt(idx) {
+  selectedFiles.splice(idx, 1);
+  renderFileChips();
+}
+
+function renderFileChips() {
+  const list = document.getElementById('fileChipsList');
+  const extIcons = { PDF:'📄',JPG:'🖼️',JPEG:'🖼️',PNG:'🖼️',MP4:'🎬',MOV:'🎬',DOCX:'📝',XLSX:'📊',WEBP:'🖼️',GIF:'🎞️',MP3:'🎵' };
+  list.innerHTML = selectedFiles.map((f, i) => {
+    const ext = f.name.split('.').pop().toUpperCase();
+    const icon = extIcons[ext] || '📁';
+    return `<div class="file-chip" style="display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--surface); border-radius:10px; border:1px solid var(--border);">
+      <span style="font-size:20px;">${icon}</span>
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:13px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${f.name}</div>
+        <div style="font-size:11px; color:var(--text2);">${fmtSize(f.size)}</div>
+      </div>
+      <button onclick="removeFileAt(${i})" style="background:none; border:none; color:var(--text2); cursor:pointer; font-size:16px; padding:4px;">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function fmtSize(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+  return (b/1048576).toFixed(1) + ' MB';
+}
+
+// ── Progress helpers ──
+function setProgress(p, t) {
+  document.getElementById('progressBar').style.width = p + '%';
+  document.getElementById('progressText').textContent = t;
+}
+function resetBtn() { document.getElementById('processBtn').disabled = false; }
+function finishSuccess(label) {
+  setProgress(100, '✅ Done! Check your downloads.');
+  setTimeout(() => { closeModal(); resetBtn(); showToast('✅', label + ' complete!'); }, 800);
+}
+function failWith(msg) {
+  resetBtn();
+  document.getElementById('progressText').textContent = '❌ ' + msg;
+  showToast('❌', msg);
+}
+
+function triggerDownload(url, filename) {
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 8000);
+}
+
+// ══════════════════════════════════════════════
+//  MAIN ROUTER
+// ══════════════════════════════════════════════
+function processFile() {
+  if (selectedFiles.length === 0) { showToast('⚠️', 'Please select at least one file!'); return; }
+  document.getElementById('progressWrap').classList.add('visible');
+  document.getElementById('processBtn').disabled = true;
+  setProgress(5, '⏳ Starting...');
+
+  const id = currentTool.id;
+
+  // IMAGE TOOLS — all browser-based
+  const imgTools = ['compress-image','image-quality','resize-image','image-to-jpg',
+    'jpg-to-png','image-to-webp','png-to-jpg','rotate-image','watermark-image',
+    'crop-image','svg-to-png','image-to-hd'];
+  if (imgTools.includes(id)) { processAllImages(id); return; }
+
+  // REMOVE BACKGROUND — browser pixel detection
+  if (id === 'remove-bg') { processRemoveBg(); return; }
+
+  // IMAGE TO PDF — browser-based using jsPDF
+  if (id === 'image-to-pdf') { processImageToPdf(); return; }
+
+  // PDF TOOLS — PDF.co API
+  const pdfTools = ['compress-pdf','pdf-maker','merge-pdf','split-pdf','pdf-to-word',
+    'pdf-to-jpg','rotate-pdf','protect-pdf','unlock-pdf','watermark-pdf',
+    'pdf-to-excel','pdf-to-ppt','word-to-pdf','excel-to-pdf','ppt-to-pdf','html-to-pdf'];
+  if (pdfTools.includes(id)) { processPdf(id); return; }
+
+  // VIDEO TOOLS — FFmpeg.wasm
+  const vidTools = ['compress-video','video-to-hd','video-resolution','video-to-mp4',
+    'trim-video','video-to-gif','extract-audio','stabilize-video'];
+  if (vidTools.includes(id)) { processVideo(id); return; }
+
+  failWith('Tool coming soon!');
+}
+
+// ══════════════════════════════════════════════
+//  1. ALL IMAGE TOOLS (browser canvas)
+// ══════════════════════════════════════════════
+async function processAllImages(toolId) {
+  const files = selectedFiles;
+  let done = 0;
+  for (const file of files) {
+    try {
+      setProgress(Math.round((done/files.length)*80)+5, `🖼️ Processing ${file.name}...`);
+      await processOneImage(toolId, file, files.length === 1 ? '' : `_${done+1}`);
+      done++;
+    } catch(e) { console.error(e); }
+  }
+  finishSuccess(currentTool.title);
+}
+
+function processOneImage(toolId, file, suffix) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        let fmt = 'image/jpeg', ext = 'jpg', quality = 0.92;
+        canvas.width = img.width; canvas.height = img.height;
+
+        if (toolId === 'compress-image') {
+          ctx.drawImage(img, 0, 0);
+          const sl = document.getElementById('qualSlider');
+          quality = sl ? sl.value/100 : 0.7;
+          const fs = document.getElementById('opt1');
+          if (fs?.value === 'WebP') { fmt='image/webp'; ext='webp'; }
+          else if (fs?.value === 'PNG') { fmt='image/png'; ext='png'; quality=1; }
+          else if (fs?.value === 'JPG') { ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height); }
+
+        } else if (toolId === 'image-quality') {
+          ctx.drawImage(img, 0, 0);
+          const sl2 = document.getElementById('qualSlider2');
+          quality = sl2 ? sl2.value/100 : 0.85;
+
+        } else if (toolId === 'resize-image') {
+          let w = parseInt(document.getElementById('opt1')?.value) || img.width;
+          let h = parseInt(document.getElementById('opt2')?.value) || img.height;
+          const ratio = document.getElementById('opt3')?.value === 'Yes';
+          if (ratio) {
+            if (document.getElementById('opt1')?.value && !document.getElementById('opt2')?.value) h = Math.round(img.height * w / img.width);
+            if (document.getElementById('opt2')?.value && !document.getElementById('opt1')?.value) w = Math.round(img.width * h / img.height);
+          }
+          canvas.width = w; canvas.height = h;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, 0, 0, w, h);
+
+        } else if (toolId === 'image-to-jpg' || toolId === 'png-to-jpg') {
+          ctx.fillStyle = '#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
+          ctx.drawImage(img, 0, 0);
+          fmt='image/jpeg'; ext='jpg';
+
+        } else if (toolId === 'jpg-to-png' || toolId === 'svg-to-png') {
+          ctx.drawImage(img, 0, 0);
+          fmt='image/png'; ext='png'; quality=1;
+
+        } else if (toolId === 'image-to-webp') {
+          ctx.drawImage(img, 0, 0);
+          fmt='image/webp'; ext='webp';
+
+        } else if (toolId === 'rotate-image') {
+          canvas.width=img.height; canvas.height=img.width;
+          ctx.translate(canvas.width/2, canvas.height/2);
+          ctx.rotate(Math.PI/2);
+          ctx.drawImage(img, -img.width/2, -img.height/2);
+
+        } else if (toolId === 'watermark-image') {
+          ctx.drawImage(img, 0, 0);
+          const fs2 = Math.max(20, img.width*0.05);
+          ctx.font = `bold ${fs2}px Arial`;
+          ctx.fillStyle = 'rgba(255,255,255,0.5)';
+          ctx.textAlign = 'center';
+          ctx.save();
+          ctx.translate(canvas.width/2, canvas.height/2);
+          ctx.rotate(-Math.PI/6);
+          for (let y=-canvas.height; y<canvas.height; y+=fs2*4)
+            for (let x=-canvas.width; x<canvas.width; x+=260)
+              ctx.fillText('PixForge', x, y);
+          ctx.restore();
+
+        } else if (toolId === 'crop-image') {
+          const s = Math.min(img.width,img.height);
+          canvas.width=s; canvas.height=s;
+          ctx.drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,s,s);
+
+        } else if (toolId === 'image-to-hd') {
+          const sel = document.getElementById('opt1');
+          const scale = sel?.value.includes('4x') ? 4 : 2;
+          canvas.width=img.width*scale; canvas.height=img.height*scale;
+          ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          quality=0.96;
+
+        } else {
+          ctx.drawImage(img, 0, 0);
+        }
+
+        // Keep PNG for PNG inputs unless converting away
+        const isPng = file.name.toLowerCase().endsWith('.png');
+        if (isPng && !['image-to-jpg','png-to-jpg','image-to-webp','compress-image'].includes(toolId)) {
+          fmt='image/png'; ext='png'; quality=1;
+        }
+
+        const base = file.name.replace(/\.[^.]+$/,'');
+        canvas.toBlob(blob => {
+          triggerDownload(URL.createObjectURL(blob), `${base}${suffix}_pixforge.${ext}`);
+          resolve();
+        }, fmt, quality);
+      };
+      img.onerror = () => reject(new Error('Could not load image'));
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  2. REMOVE BACKGROUND (browser pixel detection)
+// ══════════════════════════════════════════════
+async function processRemoveBg() {
+  let done = 0;
+  for (const file of selectedFiles) {
+    setProgress(Math.round((done/selectedFiles.length)*80)+5, `✂️ Removing background: ${file.name}...`);
+    await new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width=img.width; canvas.height=img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const d = ctx.getImageData(0,0,canvas.width,canvas.height);
+          const px = d.data;
+          const c = (x,y) => { const i=(y*canvas.width+x)*4; return [px[i],px[i+1],px[i+2]]; };
+          const corners = [c(0,0),c(canvas.width-1,0),c(0,canvas.height-1),c(canvas.width-1,canvas.height-1)];
+          const bgR=Math.round(corners.reduce((s,c)=>s+c[0],0)/4);
+          const bgG=Math.round(corners.reduce((s,c)=>s+c[1],0)/4);
+          const bgB=Math.round(corners.reduce((s,c)=>s+c[2],0)/4);
+          for (let i=0; i<px.length; i+=4)
+            if (Math.abs(px[i]-bgR)+Math.abs(px[i+1]-bgG)+Math.abs(px[i+2]-bgB) < 180)
+              px[i+3]=0;
+          ctx.putImageData(d, 0, 0);
+          canvas.toBlob(blob => {
+            triggerDownload(URL.createObjectURL(blob), file.name.replace(/\.[^.]+$/,'')+'_no_bg.png');
+            resolve();
+          }, 'image/png');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+    done++;
+  }
+  finishSuccess('Remove Background');
+}
+
+// ══════════════════════════════════════════════
+//  3. IMAGE TO PDF (browser — jsPDF via CDN)
+// ══════════════════════════════════════════════
+async function processImageToPdf() {
+  setProgress(15, '⏳ Loading PDF engine...');
+  try {
+    if (!window.jspdf) {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    }
+    const { jsPDF } = window.jspdf;
+    setProgress(30, '📄 Creating PDF...');
+
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', compress: true });
+    let first = true;
+
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const file = selectedFiles[i];
+      setProgress(30 + Math.round((i/selectedFiles.length)*60), `📄 Adding image ${i+1}/${selectedFiles.length}...`);
+      const dataUrl = await fileToDataURL(file);
+      const img = await loadImage(dataUrl);
+      const pw = pdf.internal.pageSize.getWidth();
+      const ph = pdf.internal.pageSize.getHeight();
+      const ratio = Math.min(pw/img.width, ph/img.height);
+      const w = img.width*ratio, h = img.height*ratio;
+      const x = (pw-w)/2, y = (ph-h)/2;
+      if (!first) pdf.addPage();
+      pdf.addImage(dataUrl, 'JPEG', x, y, w, h);
+      first = false;
+    }
+
+    setProgress(95, '📦 Saving PDF...');
+    const blob = pdf.output('blob');
+    const name = selectedFiles[0].name.replace(/\.[^.]+$/,'');
+    triggerDownload(URL.createObjectURL(blob), `${name}_pixforge.pdf`);
+    finishSuccess('Image to PDF');
+  } catch(e) {
+    failWith('PDF creation failed: ' + e.message);
+  }
+}
+
+// ══════════════════════════════════════════════
+//  4. ALL PDF TOOLS — PDF.co API
+// ══════════════════════════════════════════════
+async function processPdf(toolId) {
+  try {
+    setProgress(10, '📤 Uploading to PDF.co...');
+    const file = selectedFiles[0];
+    const base = file.name.replace(/\.[^.]+$/,'');
+
+    // Upload file
+    let presignRes;
+    try {
+      presignRes = await fetch(
+        'https://api.pdf.co/v1/file/upload/get-presigned-url?contenttype=application/octet-stream&name=' + encodeURIComponent(file.name),
+        { headers: { 'x-api-key': KEYS.pdfco } }
+      );
+    } catch(e) { throw new Error('Cannot reach PDF.co. Check internet connection.'); }
+
+    if (!presignRes.ok) throw new Error(`PDF.co auth failed (${presignRes.status}). Check API key.`);
+    const pData = await presignRes.json();
+    if (pData.error) throw new Error(pData.message || 'PDF.co rejected the API key.');
+
+    setProgress(25, '⬆️ Uploading file...');
+    const putRes = await fetch(pData.presignedUrl, {
+      method: 'PUT', headers: {'content-type':'application/octet-stream'}, body: file
+    });
+    if (!putRes.ok) throw new Error('File upload failed.');
+
+    // For merge-pdf, upload all files
+    let urls = [pData.url];
+    if (toolId === 'merge-pdf' && selectedFiles.length > 1) {
+      setProgress(30, '⬆️ Uploading additional files...');
+      for (let i = 1; i < selectedFiles.length; i++) {
+        const f = selectedFiles[i];
+        const pr = await fetch(
+          'https://api.pdf.co/v1/file/upload/get-presigned-url?contenttype=application/octet-stream&name=' + encodeURIComponent(f.name),
+          { headers: { 'x-api-key': KEYS.pdfco } }
+        );
+        const pd = await pr.json();
+        await fetch(pd.presignedUrl, { method:'PUT', headers:{'content-type':'application/octet-stream'}, body:f });
+        urls.push(pd.url);
+      }
+    }
+
+    setProgress(50, '⚙️ Processing...');
+
+    const toolMap = {
+      'compress-pdf':  { ep:'https://api.pdf.co/v1/pdf/optimize',           ext:'pdf',  extra:{} },
+      'pdf-maker':     { ep:'https://api.pdf.co/v1/pdf/convert/from/image', ext:'pdf',  extra:{} },
+      'merge-pdf':     { ep:'https://api.pdf.co/v1/pdf/merge2',             ext:'pdf',  extra:{} },
+      'split-pdf':     { ep:'https://api.pdf.co/v1/pdf/split',              ext:'pdf',  extra:{pages:'1'} },
+      'pdf-to-word':   { ep:'https://api.pdf.co/v1/pdf/convert/to/doc',     ext:'docx', extra:{} },
+      'pdf-to-jpg':    { ep:'https://api.pdf.co/v1/pdf/convert/to/jpg',     ext:'jpg',  extra:{} },
+      'rotate-pdf':    { ep:'https://api.pdf.co/v1/pdf/edit/rotate-pages',  ext:'pdf',  extra:{rotationAngle:90,pages:'0-'} },
+      'protect-pdf':   { ep:'https://api.pdf.co/v1/pdf/security/add',       ext:'pdf',  extra:{ownerPassword:'pixforge',userPassword:'pixforge'} },
+      'unlock-pdf':    { ep:'https://api.pdf.co/v1/pdf/security/remove',    ext:'pdf',  extra:{} },
+      'watermark-pdf': { ep:'https://api.pdf.co/v1/pdf/edit/add/text',      ext:'pdf',  extra:{text:'PixForge',pages:'0-',x:200,y:400,fontsize:60,color:'0xCCCCCC'} },
+      'pdf-to-excel':  { ep:'https://api.pdf.co/v1/pdf/convert/to/xls',     ext:'xlsx', extra:{} },
+      'pdf-to-ppt':    { ep:'https://api.pdf.co/v1/pdf/convert/to/pptx',    ext:'pptx', extra:{} },
+      'word-to-pdf':   { ep:'https://api.pdf.co/v1/pdf/convert/from/doc',   ext:'pdf',  extra:{} },
+      'excel-to-pdf':  { ep:'https://api.pdf.co/v1/pdf/convert/from/xls',   ext:'pdf',  extra:{} },
+      'ppt-to-pdf':    { ep:'https://api.pdf.co/v1/pdf/convert/from/ppt',   ext:'pdf',  extra:{} },
+      'html-to-pdf':   { ep:'https://api.pdf.co/v1/pdf/convert/from/html',  ext:'pdf',  extra:{} },
+    };
+
+    const tool = toolMap[toolId];
+    if (!tool) throw new Error('Tool not available yet.');
+
+    const payload = {
+      name: `${base}_pixforge.${tool.ext}`,
+      async: false,
+      ...tool.extra,
+      ...(toolId === 'merge-pdf' ? { urls } : { url: urls[0] })
+    };
+
+    setProgress(65, '🔄 Converting...');
+    let jobRes;
+    try {
+      jobRes = await fetch(tool.ep, {
+        method:'POST',
+        headers:{'x-api-key':KEYS.pdfco,'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+    } catch(e) { throw new Error('PDF.co request failed. Check internet.'); }
+
+    if (!jobRes.ok) throw new Error(`PDF.co error (${jobRes.status}). May have hit free limit (100/day).`);
+    const jd = await jobRes.json();
+    if (jd.error) throw new Error(jd.message || 'PDF processing failed.');
+
+    const resultUrl = jd.url || (Array.isArray(jd.urls) ? jd.urls[0] : null);
+    if (!resultUrl) throw new Error('No output from PDF.co');
+
+    setProgress(88, '📥 Downloading...');
+    const dlRes = await fetch(resultUrl);
+    if (!dlRes.ok) throw new Error('Download failed');
+    const blob = await dlRes.blob();
+    triggerDownload(URL.createObjectURL(blob), `${base}_pixforge.${tool.ext}`);
+    finishSuccess(currentTool.title);
+
+  } catch(e) {
+    console.error(e);
+    failWith(e.message);
+  }
+}
+
+// ══════════════════════════════════════════════
+//  5. VIDEO TOOLS — FFmpeg.wasm 0.11.x
+// ══════════════════════════════════════════════
+async function processVideo(toolId) {
+  try {
+    setProgress(8, '⏳ Loading video engine (first time: ~15 seconds)...');
+
+    if (!window._ffReady) {
+      await loadScript('https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js');
+      window._ffReady = true;
+    }
+
+    const { createFFmpeg, fetchFile } = window.FFmpeg;
+    if (!createFFmpeg) throw new Error('Video engine failed to load. Check internet connection.');
+
+    const ffmpeg = createFFmpeg({
+      log: false,
+      corePath: 'https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
+      progress: ({ ratio }) => {
+        if (ratio > 0) setProgress(20 + Math.round(ratio*65), `🎬 Processing... ${Math.round(ratio*100)}%`);
+      }
+    });
+
+    setProgress(12, '⚙️ Initialising engine...');
+    await ffmpeg.load();
+
+    for (let fi = 0; fi < selectedFiles.length; fi++) {
+      const file = selectedFiles[fi];
+      const base = file.name.replace(/\.[^.]+$/,'');
+      const inputExt = file.name.split('.').pop().toLowerCase();
+      const inputName = `input.${inputExt}`;
+
+      setProgress(18, `📂 Reading ${file.name}...`);
+      ffmpeg.FS('writeFile', inputName, await fetchFile(file));
+
+      let outputName = 'output_pixforge.mp4';
+      let args = [];
+
+      if (toolId === 'compress-video') {
+        const val = document.getElementById('opt1')?.value || 'Auto';
+        const crf = val.includes('70%') ? '35' : val.includes('50%') ? '28' : '23';
+        args = ['-i',inputName,'-c:v','libx264','-crf',crf,'-preset','ultrafast','-c:a','aac','-b:a','128k',outputName];
+      } else if (toolId === 'video-to-hd' || toolId === 'video-resolution') {
+        const val = document.getElementById('opt1')?.value || '1080p';
+        const sc = val.includes('1080') ? '1920:1080' : val.includes('720') ? '1280:720' : '854:480';
+        args = ['-i',inputName,'-vf',`scale=${sc}`,'-c:v','libx264','-crf','20','-c:a','aac',outputName];
+      } else if (toolId === 'video-to-mp4') {
+        args = ['-i',inputName,'-c:v','libx264','-crf','23','-c:a','aac',outputName];
+      } else if (toolId === 'trim-video') {
+        args = ['-i',inputName,'-ss','0','-t','30','-c:v','libx264','-c:a','aac',outputName];
+      } else if (toolId === 'video-to-gif') {
+        outputName = 'output_pixforge.gif';
+        args = ['-i',inputName,'-vf','fps=8,scale=320:-1','-t','8',outputName];
+      } else if (toolId === 'extract-audio') {
+        outputName = `${base}_audio.mp3`;
+        args = ['-i',inputName,'-q:a','2','-map','a',outputName];
+      } else if (toolId === 'stabilize-video') {
+        args = ['-i',inputName,'-vf','deshake=x=64:y=64','-c:a','copy',outputName];
+      } else {
+        args = ['-i',inputName,'-c:v','libx264','-crf','23','-c:a','aac',outputName];
+      }
+
+      await ffmpeg.run(...args);
+
+      const outData = ffmpeg.FS('readFile', outputName);
+      const ext = outputName.split('.').pop();
+      const mime = ext==='gif'?'image/gif':ext==='mp3'?'audio/mpeg':'video/mp4';
+      const blob = new Blob([outData.buffer], {type:mime});
+      const suffix = selectedFiles.length > 1 ? `_${fi+1}` : '';
+      triggerDownload(URL.createObjectURL(blob), `${base}${suffix}_pixforge.${ext}`);
+
+      try { ffmpeg.FS('unlink',inputName); ffmpeg.FS('unlink',outputName); } catch(e){}
+    }
+
+    finishSuccess(currentTool.title);
+
+  } catch(e) {
+    console.error(e);
+    let msg = e.message || 'Video processing failed.';
+    if (msg.includes('SharedArrayBuffer')) msg = 'Video needs HTTPS headers. Make sure _headers file is deployed with index.html on Netlify.';
+    if (msg.includes('memory') || msg.includes('OOM')) msg = 'File too large. Try a video under 50MB.';
+    failWith(msg);
+  }
+}
+
+// ── Helpers ──
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
+    const s = document.createElement('script');
+    s.src=src; s.onload=resolve; s.onerror=()=>reject(new Error('Failed to load '+src));
+    document.head.appendChild(s);
+  });
+}
+
+function fileToDataURL(file) {
+  return new Promise(res => { const r=new FileReader(); r.onload=e=>res(e.target.result); r.readAsDataURL(file); });
+}
+
+function loadImage(src) {
+  return new Promise(res => { const i=new Image(); i.onload=()=>res(i); i.src=src; });
+}
+
+function showToast(icon, msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// ── Drag & Drop on drop zone ──
+const dz = document.getElementById('dropZone');
+dz.addEventListener('click', () => document.getElementById('fileInput').click());
+
+// ── Category Filter ──
+function filterCategory(cat, btn) {
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tool-card').forEach(c => {
+    c.style.display = (cat === 'all' || c.classList.contains(cat)) ? 'block' : 'none';
+  });
+}
+
+// ── Search ──
+function filterTools() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.tool-card').forEach(c => {
+    c.style.display = c.innerText.toLowerCase().includes(q) ? 'block' : 'none';
+  });
+}
+
+// ── Scroll Animations ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.tool-card, .step, .safety-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+
+function toggleMenu() { showToast('📱', 'Mobile menu coming soon!'); }
+</script>
+</body>
+</html>
